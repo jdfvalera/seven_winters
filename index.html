@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Prophecy of Seven Winters</title>
+
+  <style>
+    body {
+      background: #0b0b14;
+      color: #f2f2fb;
+      font-family: Georgia, serif;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    .game {
+      max-width: 720px;
+      padding: 40px 28px 80px;
+    }
+
+    h1 {
+      text-align: center;
+      font-weight: normal;
+      color: #b8b3ff;
+      margin-bottom: 44px;
+      letter-spacing: 0.6px;
+    }
+
+    .chapter {
+      text-align: center;
+      font-size: 14px;
+      opacity: 0.65;
+      margin-bottom: 22px;
+    }
+
+    .text {
+      font-size: 18px;
+      line-height: 2.05;
+      white-space: pre-line;
+      margin-bottom: 42px;
+    }
+
+    .choices {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    button {
+      background: transparent;
+      border: 1px solid #6a5acd;
+      border-radius: 14px;
+      padding: 18px;
+      font-size: 16px;
+      color: #f2f2fb;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    button:active {
+      background: rgba(106, 90, 205, 0.25);
+    }
+  </style>
+</head>
+<body>
+  <div class="game">
+    <h1>The Prophecy of Seven Winters</h1>
+    <div class="chapter" id="chapter"></div>
+    <div class="text" id="text"></div>
+    <div class="choices" id="choices"></div>
+  </div>
+
+<script>
+const chapterEl = document.getElementById("chapter");
+const textEl = document.getElementById("text");
+const choicesEl = document.getElementById("choices");
+
+// Persistent narrative memory
+const state = {
+  open: false,
+  cautious: false,
+  reflective: false,
+  decisive: false
+};
+
+const scenes = {
+
+  /* =========================
+     CHAPTER I — FIRST WINTER
+     ========================= */
+
+  c1: {
+    chapter: "Chapter I — The First Winter",
+    text:
+`The prophecy does not announce itself.
+
+It slips into existence the way certain moments do —
+quietly, without permission,
+and with just enough presence
+to make ignoring it feel dishonest.
+
+The first winter always carries this question:
+should novelty be met with openness,
+or with care?`,
+    options: [
+      { label: "Meet the feeling openly", next: "c1_open", effect: () => state.open = true },
+      { label: "Hold back and observe", next: "c1_guarded", effect: () => state.cautious = true }
+    ]
+  },
+
+  c1_open: {
+    chapter: "Chapter I — The First Winter",
+    text:
+`You do not retreat from the warmth.
+
+There is risk in that —
+the prophecy notes it —
+but there is also honesty.
+
+Some connections arrive asking to be met fully,
+before doubt teaches restraint.
+
+The warmth steadies when acknowledged.
+It does not fade.`,
+    options: [{ label: "Continue", next: "c1_open_2" }]
+  },
+
+  c1_open_2: {
+    chapter: "Chapter I — The First Winter",
+    text:
+`The prophecy records this quietly:
+that openness, when offered early,
+did not weaken the moment.
+
+It clarified it.`,
+    options: [{ label: "Enter the second winter", next: "c2" }]
+  },
+
+  c1_guarded: {
+    chapter: "Chapter I — The First Winter",
+    text:
+`You choose distance — not coldness, but space.
+
+The prophecy understands restraint.
+It has watched too many moments
+collapse under premature certainty.
+
+Patience, too, can be a form of care.`,
+    options: [{ label: "Continue", next: "c1_guarded_2" }]
+  },
+
+  c1_guarded_2: {
+    chapter: "Chapter I — The First Winter",
+    text:
+`Time passes.
+
+The warmth does not disappear.
+It waits.
+
+The prophecy records this as well:
+that caution did not cost the moment.
+
+It refined it.`,
+    options: [{ label: "Enter the second winter", next: "c2" }]
+  },
+
+  /* =========================
+     CHAPTER II — SECOND WINTER
+     ========================= */
+
+  c2: {
+    chapter: "Chapter II — The Second Winter",
+    text:
+`The second winter arrives differently,
+depending on how the first was met.
+
+But it arrives all the same.
+
+It asks whether repetition dulls meaning —
+or deepens it.`,
+    options: [
+      { label: "Look for patterns over time", next: "c2_pattern", effect: () => state.reflective = true },
+      { label: "Trust what already feels consistent", next: "c2_trust", effect: () => state.decisive = true }
+    ]
+  },
+
+  c2_pattern: {
+    chapter: "Chapter II — The Second Winter",
+    text:
+`You begin to notice the shape of things.
+
+Laughter that returns without effort.
+Silence that never demands filling.
+A sense that familiarity is sharpening attention,
+not dulling it.
+
+The prophecy approves of patience.`,
+    options: [{ label: "Continue", next: "c2_merge" }]
+  },
+
+  c2_trust: {
+    chapter: "Chapter II — The Second Winter",
+    text:
+`You do not hesitate.
+
+Some truths announce themselves
+through repetition alone.
+
+The prophecy notes your confidence:
+that consistency, once recognized,
+does not require further testing.`,
+    options: [{ label: "Continue", next: "c2_merge" }]
+  },
+
+  c2_merge: {
+    chapter: "Chapter II — The Second Winter",
+    text:
+`However it was recognized,
+the pattern holds.
+
+The prophecy moves forward.`,
+    options: [{ label: "Enter the third winter", next: "c3" }]
+  },
+
+  /* =========================
+     CHAPTER III — THIRD WINTER
+     ========================= */
+
+  c3: {
+    chapter: "Chapter III — The Third Winter",
+    text:
+`Memory enters the prophecy here.
+
+Not as isolated events,
+but as texture.
+
+The question sharpens:
+does familiarity breed indifference —
+or intimacy?`,
+    options: [
+      { label: "Reflect on shared language and rhythm", next: "c3_intimate" },
+      { label: "Examine why it still feels alive", next: "c3_inquisitive" }
+    ]
+  },
+
+  c3_intimate: {
+    chapter: "Chapter III — The Third Winter",
+    text:
+`You recognize the ease of being understood.
+
+The way explanation has shortened.
+The way presence feels sufficient.
+
+The prophecy calls this intimacy.`,
+    options: [{ label: "Continue", next: "c3_merge" }]
+  },
+
+  c3_inquisitive: {
+    chapter: "Chapter III — The Third Winter",
+    text:
+`You question durability.
+
+Why repetition has not softened interest.
+Why comfort has not turned invisible.
+
+The prophecy calls this awareness.`,
+    options: [{ label: "Continue", next: "c3_merge" }]
+  },
+
+  c3_merge: {
+    chapter: "Chapter III — The Third Winter",
+    text:
+`Different lenses.
+Same truth.
+
+The prophecy continues.`,
+    options: [{ label: "Enter the fourth winter", next: "c4" }]
+  },
+
+  /* =========================
+     CHAPTER IV — FOURTH WINTER
+     ========================= */
+
+  c4: {
+    chapter: "Chapter IV — The Fourth Winter",
+    text:
+`The fourth winter is less patient.
+
+It asks whether hesitation is wisdom —
+or avoidance.`,
+    options: [
+      { label: "Accept clarity as it arrives", next: "c4_accept" },
+      { label: "Linger with uncertainty", next: "c4_linger" }
+    ]
+  },
+
+  c4_accept: {
+    chapter: "Chapter IV — The Fourth Winter",
+    text:
+`You allow the truth to name itself.
+
+The prophecy respects this:
+clarity does not demand delay.`,
+    options: [{ label: "Continue", next: "c4_merge" }]
+  },
+
+  c4_linger: {
+    chapter: "Chapter IV — The Fourth Winter",
+    text:
+`You give uncertainty space.
+
+Not to deny truth,
+but to approach it gently.
+
+The prophecy respects this too.`,
+    options: [{ label: "Continue", next: "c4_merge" }]
+  },
+
+  c4_merge: {
+    chapter: "Chapter IV — The Fourth Winter",
+    text:
+`Different tempos.
+Same direction.`,
+    options: [{ label: "Enter the fifth winter", next: "c5" }]
+  },
+
+  /* =========================
+     CHAPTER V — FIFTH WINTER
+     ========================= */
+
+  c5: {
+    chapter: "Chapter V — The Fifth Winter",
+    text:
+`The prophecy refines its language.
+
+It stops pretending to be abstract.
+
+It asks why effort has not replaced intention.`,
+    options: [
+      { label: "Recognize durability", next: "c5_durable" },
+      { label: "Question endurance", next: "c5_examine" }
+    ]
+  },
+
+  c5_durable: {
+    chapter: "Chapter V — The Fifth Winter",
+    text:
+`You recognize something rare.
+
+That time has not eroded meaning.
+It has reinforced it.`,
+    options: [{ label: "Continue", next: "c5_merge" }]
+  },
+
+  c5_examine: {
+    chapter: "Chapter V — The Fifth Winter",
+    text:
+`You test the structure carefully.
+
+Not out of doubt,
+but respect for longevity.
+
+It holds.`,
+    options: [{ label: "Continue", next: "c5_merge" }]
+  },
+
+  c5_merge: {
+    chapter: "Chapter V — The Fifth Winter",
+    text:
+`The prophecy prepares its final question.`,
+    options: [{ label: "Enter the sixth winter", next: "c6" }]
+  },
+
+  /* =========================
+     CHAPTER VI — SIXTH WINTER
+     ========================= */
+
+  c6: {
+    chapter: "Chapter VI — The Sixth Winter",
+    text:
+`By now, the prophecy is done circling.
+
+It asks whether recognition
+requires ceremony —
+or honesty.`,
+    options: [
+      { label: "Allow the truth to be spoken", next: "c6_allow" },
+      { label: "Wait for the right moment", next: "c6_wait" }
+    ]
+  },
+
+  c6_allow: {
+    chapter: "Chapter VI — The Sixth Winter",
+    text:
+`You do not wait for perfection.
+
+Honesty is sufficient.`,
+    options: [{ label: "Continue", next: "c6_merge" }]
+  },
+
+  c6_wait: {
+    chapter: "Chapter VI — The Sixth Winter",
+    text:
+`You respect timing.
+
+The prophecy notes restraint —
+not doubt.`,
+    options: [{ label: "Continue", next: "c6_merge" }]
+  },
+
+  c6_merge: {
+    chapter: "Chapter VI — The Sixth Winter",
+    text:
+`The final winter arrives.`,
+    options: [{ label: "Enter the seventh winter", next: "c7" }]
+  },
+
+  /* =========================
+     CHAPTER VII — SEVENTH WINTER
+     ========================= */
+
+  c7: {
+    chapter: "Chapter VII — The Seventh Winter",
+    text:
+`Seven winters.
+Seven returns of warmth.
+
+The prophecy has asked itself
+every possible way.
+
+There is nothing left to disguise.
+
+So it asks —
+clearly, honestly:
+
+Will you be my Valentine? ❤️`,
+    options: []
+  }
+
+};
+
+function render(key) {
+  const scene = scenes[key];
+  chapterEl.textContent = scene.chapter;
+  textEl.textContent = scene.text;
+  choicesEl.innerHTML = "";
+
+  scene.options.forEach(opt => {
+    const btn = document.createElement("button");
+    btn.textContent = opt.label;
+    btn.onclick = () => {
+      if (opt.effect) opt.effect();
+      render(opt.next);
+    };
+    choicesEl.appendChild(btn);
+  });
+}
+
+render("c1");
+</script>
+</body>
+</html>
