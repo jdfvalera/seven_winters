@@ -77,6 +77,8 @@
 const chapterEl = document.getElementById("chapter");
 const textEl = document.getElementById("text");
 const choicesEl = document.getElementById("choices");
+const imageEl = document.getElementById("image");
+
 
 // Persistent narrative memory
 const state = {
@@ -289,7 +291,7 @@ The prophecy continues.`,
     text:
 `The fourth winter is less patient.
 
-It asks whether hesitation is wisdom —
+It asks whether hesitation is wisdom
 or avoidance.`,
     options: [
       { label: "Accept clarity as it arrives", next: "c4_accept" },
@@ -456,17 +458,26 @@ Will you be my Valentine? ❤️`,
 
 function render(key) {
   const scene = scenes[key];
-  chapterEl.textContent = scene.chapter;
-  textEl.textContent = scene.text;
+  chapterEl.textContent = scene.chapter || "";
+  textEl.textContent = scene.text || "";
   choicesEl.innerHTML = "";
+  imageEl.innerHTML = "";
+
+  if (scene.yippie) {
+    textEl.innerHTML = `<div class="yippie">YIPPIE 🎉</div>`;
+  }
+
+  if (scene.image) {
+    const img = document.createElement("img");
+    img.src = scene.image;
+    img.alt = "Celebration image";
+    imageEl.appendChild(img);
+  }
 
   scene.options.forEach(opt => {
     const btn = document.createElement("button");
     btn.textContent = opt.label;
-    btn.onclick = () => {
-      if (opt.effect) opt.effect();
-      render(opt.next);
-    };
+    btn.onclick = () => render(opt.next);
     choicesEl.appendChild(btn);
   });
 }
