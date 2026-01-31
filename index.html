@@ -116,8 +116,8 @@ or with care?`,
     text:
 `You do not retreat from the warmth.
 
-There is risk in that —
-the prophecy notes it —
+There is risk in that.
+The prophecy notes it,
 but there is also honesty.
 
 Some connections arrive asking to be met fully,
@@ -142,7 +142,7 @@ It clarified it.`,
   c1_guarded: {
     chapter: "Chapter I — The First Winter",
     text:
-`You choose distance — not coldness, but space.
+`You choose distance; not coldness, but space.
 
 The prophecy understands restraint.
 It has watched too many moments
@@ -179,7 +179,7 @@ depending on how the first was met.
 
 But it arrives all the same.
 
-It asks whether repetition dulls meaning —
+It asks whether repetition dulls meaning
 or deepens it.`,
     options: [
       { label: "Look for patterns over time", next: "c2_pattern", effect: () => state.reflective = true },
@@ -238,7 +238,7 @@ Not as isolated events,
 but as texture.
 
 The question sharpens:
-does familiarity breed indifference —
+does familiarity breed indifference
 or intimacy?`,
     options: [
       { label: "Reflect on shared language and rhythm", next: "c3_intimate" },
@@ -384,7 +384,7 @@ It holds.`,
 `By now, the prophecy is done circling.
 
 It asks whether recognition
-requires ceremony —
+requires ceremony
 or honesty.`,
     options: [
       { label: "Allow the truth to be spoken", next: "c6_allow" },
@@ -406,7 +406,7 @@ Honesty is sufficient.`,
     text:
 `You respect timing.
 
-The prophecy notes restraint —
+The prophecy notes restraint,
 not doubt.`,
     options: [{ label: "Continue", next: "c6_merge" }]
   },
@@ -433,10 +433,22 @@ every possible way.
 
 There is nothing left to disguise.
 
-So it asks —
+So it asks
 clearly, honestly:
 
 Will you be my Valentine? ❤️`,
+    options: [
+      { label: "Yes", next: "yippie" },
+      { label: "Obviously yes!", next: "yippie" },
+      { label: "Yes, and you knew that already.", next: "yippie" }
+    ]
+  },
+
+  yippie: {
+    chapter: "",
+    text: "YIPPIE!!!",
+    image: "IMG_2535.jpeg",
+    yippie: true,
     options: []
   }
 
