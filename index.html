@@ -63,6 +63,34 @@
     button:active {
       background: rgba(106, 90, 205, 0.25);
     }
+
+    .image-container {
+      text-align: center;
+      margin: 30px 0;
+    }
+
+    .image-container img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 14px;
+      box-shadow: 0 8px 32px rgba(106, 90, 205, 0.3);
+    }
+
+    /* Special styling for cryptic/mysterious images */
+    .image-container.cryptic img {
+      filter: brightness(0.6) contrast(1.2);
+      opacity: 0.85;
+    }
+
+    .image-container.subtle img {
+      filter: blur(2px) brightness(0.7);
+      opacity: 0.7;
+    }
+
+    .image-container.revealed img {
+      filter: none;
+      opacity: 1;
+    }
   </style>
 </head>
 <body>
@@ -70,6 +98,9 @@
     <h1>The Prophecy of Seven Winters</h1>
     <div class="chapter" id="chapter"></div>
     <div class="text" id="text"></div>
+    <div class="image-container" id="imageContainer" style="display: none;">
+      <img id="image" src="" alt="" />
+    </div>
     <div class="choices" id="choices"></div>
   </div>
 
@@ -78,6 +109,7 @@ const chapterEl = document.getElementById("chapter");
 const textEl = document.getElementById("text");
 const choicesEl = document.getElementById("choices");
 const imageEl = document.getElementById("image");
+const imageContainer = document.getElementById("imageContainer");
 
 
 // Persistent narrative memory
@@ -99,8 +131,8 @@ const scenes = {
     text:
 `The prophecy does not announce itself.
 
-It slips into existence the way certain moments do.
-Quietly, without permission,
+It slips into existence the way certain moments do —
+quietly, without permission,
 and with just enough presence
 to make ignoring it feel dishonest.
 
@@ -127,6 +159,11 @@ before doubt teaches restraint.
 
 The warmth steadies when acknowledged.
 It does not fade.`,
+    // PHOTO 1: A very cropped/close-up detail shot from your first year together
+    // Suggestion: Hands holding, a smile (just lips), or intertwined fingers
+    // Keep it abstract - just a hint of connection
+    image: "year1_a.jpeg",
+    imageStyle: "cryptic",
     options: [{ label: "Continue", next: "c1_open_2" }]
   },
 
@@ -151,6 +188,11 @@ It has watched too many moments
 collapse under premature certainty.
 
 Patience, too, can be a form of care.`,
+    // PHOTO 1 (alternate path): A silhouette or shadow shot from first year
+    // Suggestion: Silhouettes against sunset/light, or shadows on ground
+    // Keep identity mysterious
+    image: "year1_b.jpeg",
+    imageStyle: "cryptic",
     options: [{ label: "Continue", next: "c1_guarded_2" }]
   },
 
@@ -200,6 +242,11 @@ A sense that familiarity is sharpening attention,
 not dulling it.
 
 The prophecy approves of patience.`,
+    // PHOTO 2: A blurred or motion photo from year 2
+    // Suggestion: Walking together (blurred), laughing (out of focus), 
+    // or an activity you did together with motion blur
+    image: "year2_a.jpeg",
+    imageStyle: "subtle",
     options: [{ label: "Continue", next: "c2_merge" }]
   },
 
@@ -214,6 +261,11 @@ through repetition alone.
 The prophecy notes your confidence:
 that consistency, once recognized,
 does not require further testing.`,
+    // PHOTO 2 (alternate): A cropped detail from a shared moment
+    // Suggestion: Coffee cups together, feet/shoes side by side,
+    // matching items, or overlapping shadows
+    image: "year2_b.jpeg",
+    imageStyle: "cryptic",
     options: [{ label: "Continue", next: "c2_merge" }]
   },
 
@@ -257,6 +309,11 @@ The way explanation has shortened.
 The way presence feels sufficient.
 
 The prophecy calls this intimacy.`,
+    // PHOTO 3: A closer shot, slightly less obscured from year 3
+    // Suggestion: Side profile(s), back of heads looking at scenery,
+    // or embracing (cropped to show less face detail)
+    image: "year3_a.jpeg",
+    imageStyle: "subtle",
     options: [{ label: "Continue", next: "c3_merge" }]
   },
 
@@ -269,6 +326,11 @@ Why repetition has not softened interest.
 Why comfort has not turned invisible.
 
 The prophecy calls this awareness.`,
+    // PHOTO 3 (alternate): A meaningful object or place from year 3
+    // Suggestion: A gift given, a ticket stub, a location you visited
+    // cropped to show just the meaningful detail
+    image: "year3_b.jpeg",
+    imageStyle: "cryptic",
     options: [{ label: "Continue", next: "c3_merge" }]
   },
 
@@ -306,6 +368,11 @@ or avoidance.`,
 
 The prophecy respects this:
 clarity does not demand delay.`,
+    // PHOTO 4: A photo showing more context from year 4
+    // Suggestion: Together at an event, a special date/trip,
+    // still somewhat darkened or artistically filtered
+    image: "year4_a.jpeg",
+    imageStyle: "subtle",
     options: [{ label: "Continue", next: "c4_merge" }]
   },
 
@@ -318,6 +385,11 @@ Not to deny truth,
 but to approach it gently.
 
 The prophecy respects this too.`,
+    // PHOTO 4 (alternate): A peaceful/contemplative moment from year 4
+    // Suggestion: Watching sunset/sunrise, in nature together,
+    // slightly obscured by lighting or framing
+    image: "year4_b.jpeg",
+    imageStyle: "cryptic",
     options: [{ label: "Continue", next: "c4_merge" }]
   },
 
@@ -354,6 +426,11 @@ It asks why effort has not replaced intention.`,
 
 That time has not eroded meaning.
 It has reinforced it.`,
+    // PHOTO 5: A clearer photo from year 5, faces becoming more visible
+    // Suggestion: A happy moment together, celebration, or achievement
+    // Less filtering - starting to reveal more
+    image: "year5_a.jpeg",
+    imageStyle: "subtle",
     options: [{ label: "Continue", next: "c5_merge" }]
   },
 
@@ -366,6 +443,11 @@ Not out of doubt,
 but respect for longevity.
 
 It holds.`,
+    // PHOTO 5 (alternate): A milestone from year 5
+    // Suggestion: An anniversary celebration, important event,
+    // or meaningful place, slightly less obscured
+    image: "year5_b.jpeg",
+    imageStyle: "cryptic",
     options: [{ label: "Continue", next: "c5_merge" }]
   },
 
@@ -400,6 +482,11 @@ or honesty.`,
 `You do not wait for perfection.
 
 Honesty is sufficient.`,
+    // PHOTO 6: An intimate, clearer moment from year 6
+    // Suggestion: A genuine smile/laugh together, close-up,
+    // faces more visible but still with artistic lighting
+    image: "year6_a.jpeg",
+    imageStyle: "revealed",
     options: [{ label: "Continue", next: "c6_merge" }]
   },
 
@@ -410,6 +497,11 @@ Honesty is sufficient.`,
 
 The prophecy notes restraint,
 not doubt.`,
+    // PHOTO 6 (alternate): A tender moment from year 6
+    // Suggestion: Quiet intimacy, a gentle gesture,
+    // becoming clearer and more revealing
+    image: "year6_b.jpeg",
+    imageStyle: "revealed",
     options: [{ label: "Continue", next: "c6_merge" }]
   },
 
@@ -417,6 +509,11 @@ not doubt.`,
     chapter: "Chapter VI — The Sixth Winter",
     text:
 `The final winter arrives.`,
+    // PHOTO 6.5: A recent photo showing anticipation
+    // Suggestion: Recent photo from late year 6/early year 7,
+    // almost fully visible, genuine and warm
+    image: "year6_c.jpeg",
+    imageStyle: "revealed",
     options: [{ label: "Enter the seventh winter", next: "c7" }]
   },
 
@@ -449,7 +546,12 @@ Will you be my Valentine? ❤️`,
   yippie: {
     chapter: "",
     text: "YIPPIE!!!",
-    image: "IMG_2535.jpeg",
+    // FINAL PHOTO: Your happiest, clearest photo together
+    // Suggestion: A beautiful recent photo of both of you,
+    // big smiles, full of love and joy - completely revealed!
+    // This is the big reveal - make it count!
+    image: "year7_final.jpeg",
+    imageStyle: "revealed",
     yippie: true,
     options: []
   }
@@ -458,26 +560,33 @@ Will you be my Valentine? ❤️`,
 
 function render(key) {
   const scene = scenes[key];
-  chapterEl.textContent = scene.chapter || "";
-  textEl.textContent = scene.text || "";
+  chapterEl.textContent = scene.chapter;
+  textEl.textContent = scene.text;
   choicesEl.innerHTML = "";
-  imageEl.innerHTML = "";
 
-  if (scene.yippie) {
-    textEl.innerHTML = `<div class="yippie">YIPPIE 🎉</div>`;
-  }
-
+  // Handle image display
   if (scene.image) {
-    const img = document.createElement("img");
-    img.src = scene.image;
-    img.alt = "Celebration image";
-    imageEl.appendChild(img);
+    imageEl.src = scene.image;
+    imageEl.alt = "A moment in time";
+    imageContainer.className = "image-container";
+    
+    // Apply special styling based on image type
+    if (scene.imageStyle) {
+      imageContainer.classList.add(scene.imageStyle);
+    }
+    
+    imageContainer.style.display = "block";
+  } else {
+    imageContainer.style.display = "none";
   }
 
   scene.options.forEach(opt => {
     const btn = document.createElement("button");
     btn.textContent = opt.label;
-    btn.onclick = () => render(opt.next);
+    btn.onclick = () => {
+      if (opt.effect) opt.effect();
+      render(opt.next);
+    };
     choicesEl.appendChild(btn);
   });
 }
